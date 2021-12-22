@@ -1,5 +1,7 @@
 package com.mycompany.myapp.config;
 
+import com.mycompany.myapp.converters.MapToPerson;
+import com.mycompany.myapp.converters.PersonToMap;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -16,6 +18,14 @@ import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomCo
 @Configuration
 public class ElasticsearchConfiguration extends ElasticsearchConfigurationSupport {
 
+    private final MapToPerson mapToPerson;
+    private final PersonToMap personToMap;
+
+    public ElasticsearchConfiguration(MapToPerson mapToPerson, PersonToMap personToMap) {
+        this.mapToPerson = mapToPerson;
+        this.personToMap = personToMap;
+    }
+
     @Bean
     @Override
     public ElasticsearchCustomConversions elasticsearchCustomConversions() {
@@ -26,7 +36,9 @@ public class ElasticsearchConfiguration extends ElasticsearchConfigurationSuppor
                 new InstantWritingConverter(),
                 new InstantReadingConverter(),
                 new LocalDateWritingConverter(),
-                new LocalDateReadingConverter()
+                new LocalDateReadingConverter(),
+                mapToPerson,
+                personToMap
             )
         );
     }
