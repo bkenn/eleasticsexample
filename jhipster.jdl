@@ -1,0 +1,11 @@
+entity Person {
+	name String
+}
+
+entity Contact {
+	value String
+}
+
+relationship OneToMany {
+	Person to Contact
+}
